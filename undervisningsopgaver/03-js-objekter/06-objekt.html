@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<style>
+    article {
+        border: 1px solid #333;
+    }
+
+    article:first-child {
+        border-color: red;
+    }
+    }
+
+    main {
+        display: grid;
+        grid-template-columns: repeat (auto-fill, minmax(300px, 1fr));
+    }
+
+</style>
+
+<body>
+
+    <section class="data_container"></section>
+
+    <template>
+
+        <article class="dyreriget">
+            <h3></h3>
+            <p class="levesteder"></p>
+            <p class="type"></p>
+        </article>
+
+
+    </template>
+
+    <script>
+        let dyr = [];
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            loadDyrData();
+        }
+        async function loadDyrData() {
+            const response = await fetch("alleDyr.json");
+            console.log(response);
+            dyr = await response.json();
+            visDyr();
+        }
+
+
+        function visDyr() {
+            const container = document.querySelector(".data_container");
+            const dyrerigetTemplate = document.querySelector("template");
+
+            dyr.forEach(dyr => {
+                let klon = dyrerigetTemplate.cloneNode(true).content;
+                klon.querySelector("h3").textContent = dyr.navn;
+                klon.querySelector(".levesteder").textContent = dyr.levesteder;
+                klon.querySelector(".type").textContent = dyr.type;
+                container.appendChild(klon);
+            })
+        }
+
+    </script>
+
+</body>
+
+</html>

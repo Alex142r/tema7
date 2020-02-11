@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <ul id="display"></ul>
+    <script>
+        let playsliste = ["man in the mirror", "Bum", "wow"];
+
+        playsliste.forEach(song => {
+            let element = document.createElement("li");
+            let mySong = document.createTextNode(song);
+
+
+            element.appendChild(mySong);
+            document.querySelector("#display").appendChild(element);
+        })
+    </script>
+</body></html>
