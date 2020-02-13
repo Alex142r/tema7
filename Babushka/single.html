@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+
+    <script>
+        const Urlparameter = new URLSearchParams(window.location.search);
+        const retId = Urlparameter.get("id");
+
+        console.log(retID);
+
+        async function getJson() {
+            let jsondata = await fetch("");
+
+            let tempVar await jsonData.json();
+            retter = tempVar.feed.entry;
+
+
+            visRet();
+
+        }
+
+        function visRet() {
+            retter.forEach(ret => {
+                if (ret.gsx$id.$t == retId)
+            })
+
+        }
+    </script>
+</body></html>

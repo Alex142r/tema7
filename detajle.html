@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>detalje</title>
+    <style>
+        img {
+            width: 100%;
+        }
+
+        #detail {
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, .5);
+            overflow: scroll;
+
+        }
+
+        #person_detail {
+            margin: 3em;
+            padding: 2em;
+            background-color: white;
+        }
+
+        detail_close {
+            font-size: 2em;
+            padding: 2em;
+            position: fixed;
+        }
+
+        /*
+        .hide {
+            display: none;
+        }
+*/
+
+    </style>
+</head>
+
+
+<body>
+    <section id="detail">
+        <button id="luk">--</button>
+        <button id="detail_close">X</button>
+        <article id="person_detail">
+            <h1>Navn</h1>
+            <img src="http://ale-kea.dk/images/alan_thumb.jpg" alt="">
+            <p></p>
+            <p></p>
+            <p></p>
+        </article>
+    </section>
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", start);
+
+    let personer = [];
+    const endpoint = "https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0/od6/public/values?alt=json";
+    let filter = "alle";
+    let alder = 0;
+
+
+    function start() {
+        console.log("start");
+        hentData();
+
+
+    }
+
+
+    async function hentData() {
+        console.log("Data");
+        const response = await fetch(endpoint);
+        console.log(response);
+        personer = await response.json();
+        console.log(personer);
+        visPersoner();
+        addEventlistenersToButtons();
+
+    }
+
+    function visPersoner() {
+        console.log("visPersoner");
+
+        detail.querySelector("button").addEventListener("click", )
+
+        //        const destination = document.querySelector("article");
+        //        const container = document.querySelector("#data-container");
+        //        const personerTemplate = document.querySelector("template");
+        //        container.innerHTML = "";
+
+        personer.feed.entry.forEach(person => {
+
+
+                console.log(person);
+                if (person.gsx$id.$t == id) {
+                    console.log(person.gsx$navn.$t);
+                    detail.querySelector("h1").textContent = person.gsx$navn.$t;
+                    detail.querySelector("img").src = person.gsx$billede.$t;
+                    detail.querySelector("img").alt = person.gsx$billede.$t;
+                    detail.querySelector("p:nth-child(3)").textContent += `Religion: ${person.gsx$religion.$t}`;
+                    location.href = `07-detailView.html?id=${person.gsx$id.$t}`
+                })
+
+        }
+
+
+        //            if ((filter == "alle" || filter == person.gsx$sex.$t) && (person.gsx$alder.$t > alder)) {
+        //                let klon = personerTemplate.cloneNode(true).content;
+        //                klon.querySelector("h3").textContent = `
+        $ {
+            person.gsx$navn.$t
+        }
+        $ {
+            person.gsx$efternavn.$t
+        }
+        `;
+        //                klon.querySelector("img").src = person.gsx$billede.$t;
+        //                klon.querySelector("p:nth-child(3)").textContent += `
+        Køn: $ {
+            person.gsx$sex.$t
+        }
+        `;
+        //                klon.querySelector("p:nth-child(4)").textContent += `
+        Alder: $ {
+            person.gsx$alder.$t
+        }
+        `;
+        //                klon.querySelector("p:nth-child(5)").textContent += `
+        Religion: $ {
+            person.gsx$religion.$t
+        }
+        `;
+        //                klon.querySelector("p:nth-child(6)").textContent += `
+        Hobby: $ {
+            person.gsx$hobby.$t
+        }
+        `;
+        //                klon.querySelector("p:nth-child(7)").textContent += `
+        Job: $ {
+            person.gsx$job.$t
+        }
+        `;
+        //                klon.querySelector("p:nth-child(8)").textContent += `
+        By: $ {
+            person.gsx$by.$t
+        }
+        `;
+        //                klon.querySelector("p:nth-child(9)").textContent += `
+        RPC: $ {
+            person.gsx$rpc.$t
+        }
+        `;
+        //                klon.querySelector("article").addEventListener("click", () => showDetail(person));
+        //
+        //                container.appendChild(klon);
+        //         }   }
+
+</script>
+
+</html>

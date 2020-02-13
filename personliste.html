@@ -8,57 +8,161 @@
 </head>
 
 <style>
+    #liste {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    button {
+        cursor: pointer;
+
+    }
+
+    #detalje {
+        position: fixed;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 10;
+    }
+
+    #detajle button {
+        font-size: 2em;
+        margin: .5em;
+    }
+
+    #person {
+        margin: 3em;
+        padding: 2em;
+        background-color: white;
+
+    }
+
+    .skjul {
+        display: none;
+    }
+
 </style>
+<header>
+    <nav>
+        <button data-køn="alle" class="valgt">Alle</button>
+        <button data-køn="K">Kvinder</button>
+        <button data-køn="M">Mænd</button>
+        <button data-køn="A">Andet</button>
+    </nav>
+</header>
 
 <body>
-    <section id="personliste"></section>
+    <section id="liste"></section>
+
     <template>
-        <article>
-            <h2></h2>
-            <img src="" alt="">
-            <p></p>
-            <p></p>
-            <p></p>
+        <article class="person">
+            <h2 class="navn"></h2>
+
+            <p class="køn"></p>
+            <img src="" alt="" class="profil-billede">
 
         </article>
     </template>
+
+    <section id="detalje" class="skjul">
+        <button>X</button>
+        <article class="person">
+            <h1>Navn</h1>
+            <img src="">
+            <p>Religion</p>
+        </article>
+    </section>
+
+
     <script>
-        let personer = [];
-        const endpoint = "https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0/od6/public/values?alt=json";
-
-
         document.addEventListener("DOMContentLoaded", start);
+
+        const id = "1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0";
+        const url = `"https://spreadsheets.google.com/feeds/list/${id}/od6/public/values?alt=json"`;
+        const header = document.querySelector("header h1");
+        const detalje = document.querySelector("#detalje");
+
+
+        let personer = [];
+        let filter = "alle";
+        let antal;
+
+
+
 
         function start() {
             console.log("start");
+
+            const filterknapper = document.querySelector("nav button");
+            filterknapper.forEach(knap => knap.addEventListener("click", filtrerPersoner));
             loadPersonData();
         }
+
+        function filtrerPersoner() {
+            filter = this.dataset.køn;
+            document.querySelector(".valgt").classList.remove("valgt");
+            this.classList.add("valgt")
+            vis();
+            header.textContent = this.textContent;
+        }
         async function loadPersonData() {
-            const response = await fetch(endpoint);
+            const response = await fetch(url);
             console.log(response);
             personer = await response.json();
             visPersoner();
         }
 
-        function visPersoner() {
-            console.log("visperson");
-            let destination = document.querySelector("article");
-            let container = document.querySelector("#personliste");
-            let personerTemplate = document.querySelector("template");
-
-
+        function vis() {
+            console.log(personer);
+            antal = personer.feed.entry.length;
+            const dest = document.querySelector("#liste");
+            const skabelon = document.querySelector("template").content;
+            dest.textContent = "";
             personer.feed.entry.forEach(person => {
-                let klon = personerTemplate.cloneNode(true).content;
-                klon.querySelector("h2").textContent = `${person.gsx$navn.$t} ${person.gsx$efternavn.$t}`;
-                klon.querySelector("img").src = person.gsx$billede.$t;
-                klon.querySelector("p:nth-child(3)").textContent += `køn: ${person.gsx$sex.$t}`;
-                klon.querySelector("p:nth-child(4)").textContent += `alder: ${person.gsx$alder.$t}`;
 
-                container.appendChild(klon);
+                    if (person.gsx$sex.$t == filter || filter == "alle") {
+                        const klon = skabelon.cloneNode(true);
+                        klon.querySelector(".navn").textContent = `${person.gsx$navn.$t} ${person.gsx$efternavn.$t}`;
+                        klon.querySelector(".profil-billede").src = person.gsx$billede.$t;
+                        dest.appendChild(klon);
+                    })
+            }
+        }
+
+        //        function visPersoner() {
+        //            console.log("visperson");
+        //            let destination = document.querySelector("article");
+        //            let container = document.querySelector("#personliste");
+        //            let personerTemplate = document.querySelector("template");
+        //
+        //
+        //            personer.feed.entry.forEach(person => {
+        //                let klon = personerTemplate.cloneNode(true).content;
+        //                klon.querySelector("h2").textContent = `${person.gsx$navn.$t} ${person.gsx$efternavn.$t}`;
+        //                klon.querySelector("img").src = person.gsx$billede.$t;
+        //                klon.querySelector("p:nth-child(3)").textContent += `køn: ${person.gsx$sex.$t}`;
+        //                klon.querySelector("p:nth-child(4)").textContent += `alder: ${person.gsx$alder.$t}`;
+        //                klon.querySelector("article").addEventListener("click", () => {
+        //                    visDetalje(person)
+        //                });
+        //                container.appendChild(klon);
 
 
-            })
+        //            })
 
         }
+
+        function visDetalje() {
+            detajle.classList.remove("skjul");
+            detajle.querySelector("button").addEventListener("click", () => detalje.classlist.add("skjul"));
+            console.log(person);
+
+
+        }
+
     </script>
-</body></html>
+</body>
+
+</html>
